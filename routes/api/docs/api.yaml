@@ -1,0 +1,288 @@
+---
+  swagger: "2.0"
+  info: 
+    version: "1.0.0"
+    title: "RYUJUME"
+    description: "RYUJUME"
+    termsOfService: "http://10.156.145.132:1212"
+    contact: 
+      name: ""
+    license: 
+      name: "MIT"
+  host: "10.156.145.132:1212"
+  basePath: "/api"
+  schemes: 
+    - "http"
+  paths: 
+  
+    /auth/register:
+      post:
+        description: "회원가입" 
+        consumes:
+         - "multipart/form-data"
+        parameters:
+        - 
+          name: "register"
+          in: "body"
+          schema:
+            $ref: "#/definitions/user"
+        responses:
+          200:
+            description: OK
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+    /auth/login:
+      post:
+        description: "로그인"
+        parameters:
+        -
+          name: "login"
+          in: "body"
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+              pw:
+                type: string
+        responses:
+          200:
+            description: OK
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+    /myPage/updateInfo:
+      put:
+        description: "이력서 수정"
+        parameters:
+        -
+          name: "update infomation"
+          in: "body"
+          schema: 
+            $ref: '#/definitions/Ryujume'
+        responses:
+          200:
+            description: OK
+            schema:
+              $ref: '#/definitions/Ryujume'
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+    /myPage/readLikeInfo/{infoId}:
+      get:
+        summary: Get a info by _id
+        parameters:
+        - in: path
+          name: infoId
+          required: true
+        description: "추천한 이력서 상세 보기"
+        responses:
+          200:
+            description: OK
+            schema:
+              $ref: '#/definitions/Ryujume'
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+    /myPage/readLikeInfo:
+      get:
+        description: "추천한 이력서들 보기"
+        responses:
+          200:
+            description: OK
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Ryujume'
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+    /myPage/readMyInfo:
+      get:
+        description: "나의 이력서 보기"
+        responses:
+          200:
+            description: OK
+            schema:
+              $ref: '#/definitions/Ryujume'
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: '#/definitions/ErrorModel'
+    /main/LatestInfo:
+      get:
+        description: "최신순 이력서"
+        responses:
+          200:
+            description: OK
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Ryujume'
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+    /myPage/LatestInfo/{infoId}:
+      get:
+        summary: Get a info by _id
+        parameters:
+        - in: path
+          name: infoId
+          required: true
+        description: "추천한 이력서 상세 보기"
+        responses:
+          200:
+            description: OK
+            schema:
+              $ref: '#/definitions/Ryujume'
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+    /main/LikeInfo:
+      get:
+        description: "추천순 이력서"
+        responses:
+          200:
+            description: OK
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Ryujume'
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+    /myPage/LikeInfo/{infoId}:
+      get:
+        summary: Get a info by _id
+        parameters:
+        - in: path
+          name: infoId
+          required: true
+        description: "추천순 이력서 상세 보기"
+        responses:
+          200:
+            description: OK
+            schema:
+              $ref: '#/definitions/Ryujume'
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+    /main/likePress:
+      post:
+        description: "좋아요 누르기"
+        parameters:
+        - 
+          name: "register"
+          in: "body"
+          schema:
+            type: object
+            properties:
+              infoName:
+                type: string
+              likeStatus:
+                type: boolean
+        responses:
+          200:
+            description: OK
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+      
+      
+  definitions:
+    user:
+      type: object
+      properties:
+        id:
+          type: string
+        pw:
+          type: string
+        userName:
+          type: string
+    Ryujume:
+      type: object
+      properties:
+        userName:
+          type: string
+        id:
+          type: string
+        profileImg:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        simpleInfo:
+          type: string
+        career:
+          type: array
+          items:
+            type: object
+            properties:
+              isServed:
+                type: boolean
+              companyName:
+                type: string
+              startDate:
+                type: number
+              endDate:
+                type: number
+        academicBack:
+          type: array
+          items:
+            type: object
+            properties:
+              isInSchool:
+                type: boolean
+              SchoolName:
+                type: string
+              startDate:
+                type: number
+              endDate:
+                type: number
+        prize:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              detail:
+                type: string
+              prizeDate:
+                type: number
+        language:
+          type: array
+          items:
+            type: object
+            properties:
+              languageName:
+                type: string
+              level:
+                type: string
+        link:
+          type: array
+          items:
+            type: string
+        likedUser:
+          type: array
+          items:
+            type: string
+        date:
+          type: number
+    ErrorModel: 
+      type: "object"
+      properties: 
+        message: 
+          type: "string"
