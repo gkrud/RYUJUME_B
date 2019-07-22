@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const User = require('../../../models/User');
+const User = require('../../../model/User');
 
 const register = async (req, res) => {
     const { id, pw, userName } = req.body;
 
-    const userCreate = (user) => {
+    const userCreate = async (user) => {
         if(user) {
             throw new Error('username exists');
         } else {
@@ -26,7 +26,7 @@ const register = async (req, res) => {
     userCreate(isUser).catch(onError);
 }
 
-const login = (req,res)=>{
+const login = async(req,res)=>{
     const {id,pw} = req.body;
     const secret = req.app.get('jwt-secret');
 
@@ -78,7 +78,7 @@ const login = (req,res)=>{
 
     // find the user
     let isUser = await User.findOne(id);
-    
+
     check(isUser)
     .then(respond)
     .catch(onError)

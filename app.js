@@ -1,7 +1,6 @@
 const express = require('express');
 const body_parser = require('body-parser');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
 
 const api = require('./routes/api');
 const config = require('./config');
