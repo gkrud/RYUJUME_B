@@ -78,6 +78,10 @@ const login = (req,res)=>{
 
     // find the user
     let isUser = await User.findOne(id);
+    
+    check(isUser)
+    .then(respond)
+    .catch(onError)
 }
 
 module.exports = {
