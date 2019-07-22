@@ -10,9 +10,21 @@ const register = async (req, res) => {
             throw new Error('username exists');
         } else {
             let salt = await crypto.randomBytes(32);
-            let pwKey = await crypto.pbkdf2(pw,salt.toString('base64'),180822,64,'sha512');
-            return User.create(id,pwKey,userName,salt);
+            let pwKey = crypto.pbkdf2Sync(pw,salt.toString('base64'),180822,64,'sha512');
+
+            const user = new User();
+            user.id = id;
+            user.pw = pwKey;
+            user.userName = userName;
+            user.salt = salt;
+            return user.save();
+            //return User.create(id,pwKey,userName,salt);
         }
+    }
+    const respond = (user) => {
+        res.json({
+            message: 'registered successfully',
+        })
     }
     
     // run when there is an error (username exists)
@@ -22,8 +34,9 @@ const register = async (req, res) => {
         })
     }
 
-    let isUser = await User.findOne(id);
-    userCreate(isUser).catch(onError);
+    let isUser = await User.findOne({id}).catch(onError);
+    userCreate(isUser).then(respond).catch(onError);
+
 }
 
 const login = async(req,res)=>{
@@ -77,7 +90,7 @@ const login = async(req,res)=>{
     }
 
     // find the user
-    let isUser = await User.findOne(id);
+    let isUser = await User.findOne({id});
 
     check(isUser)
     .then(respond)
