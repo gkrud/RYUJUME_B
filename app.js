@@ -1,6 +1,7 @@
 const express = require('express');
 const body_parser = require('body-parser');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 const api = require('./routes/api');
 const config = require('./config');
@@ -17,7 +18,7 @@ app.set('jwt-secret', config.secret);
 app.use('/api',api);
 mongoose.Promise = global.Promise;
 
-mongoose.connect(config.mongodbUri, {useMongoClient:true})
+mongoose.connect(config.mongodbUri, {useNewUrlParser:true})
 .then(()=> console.log('Successfully connected to mongodb'))
 .catch(e => console.error(e));
 
