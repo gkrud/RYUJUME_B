@@ -25,7 +25,14 @@
           name: "register"
           in: "body"
           schema:
-            $ref: "#/definitions/user"
+            type: object
+            properties:
+              id: 
+                type: string
+              pw:
+                type: string
+              userName:
+                type: string
         responses:
           200:
             description: OK
@@ -54,6 +61,82 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
+    /myPage/writeRyujume:
+      post:
+        description: "이력서 작성"
+        parameters:
+        -
+          name: "write infomation"
+          in: "body"
+          schema: 
+            type: object
+            properties:
+              profileImg:
+                type: string
+              phoneNumber:
+                type: string
+              email:
+                type: string
+              simpleInfo:
+                type: string
+              career:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    isServed:
+                      type: boolean
+                    companyName:
+                      type: string
+                    startDate:
+                      type: number
+                    endDate:
+                      type: number
+              academicBack:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    isInSchool:
+                      type: boolean
+                    schoolName:
+                      type: string
+                    startDate:
+                      type: number
+                    endDate:
+                      type: number
+              prize:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    prizeDate:
+                      type: number
+              language:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    languageName:
+                      type: string
+                    level:
+                      type: string
+              link:
+                type: array
+                items:
+                  type: string
+        responses:
+          200:
+            description: OK
+            schema:
+              $ref: '#/definitions/readRyujume'
+          default:
+            description: "unexpected error"
+            schema:
+              $ref: "#/definitions/ErrorModel"
+      
     /myPage/updateInfo:
       put:
         description: "이력서 수정"
@@ -62,29 +145,87 @@
           name: "update infomation"
           in: "body"
           schema: 
-            $ref: '#/definitions/Ryujume'
+            type: object
+            properties:
+              profileImg:
+                type: string
+              phoneNumber:
+                type: string
+              email:
+                type: string
+              simpleInfo:
+                type: string
+              career:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    isServed:
+                      type: boolean
+                    companyName:
+                      type: string
+                    startDate:
+                      type: number
+                    endDate:
+                      type: number
+              academicBack:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    isInSchool:
+                      type: boolean
+                    schoolName:
+                      type: string
+                    startDate:
+                      type: number
+                    endDate:
+                      type: number
+              prize:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    prizeDate:
+                      type: number
+              language:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    languageName:
+                      type: string
+                    level:
+                      type: string
+              link:
+                type: array
+                items:
+                  type: string
         responses:
           200:
             description: OK
             schema:
-              $ref: '#/definitions/Ryujume'
+              $ref: '#/definitions/readRyujume'
           default:
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
     /myPage/readLikeInfo/{infoId}:
       get:
-        summary: Get a info by _id
+        summary: Get a Ryujume by _id
         parameters:
         - in: path
           name: infoId
+          type: string
           required: true
         description: "추천한 이력서 상세 보기"
         responses:
           200:
             description: OK
             schema:
-              $ref: '#/definitions/Ryujume'
+              $ref: '#/definitions/readRyujume'
           default:
             description: "unexpected error"
             schema:
@@ -98,7 +239,16 @@
             schema:
               type: array
               items:
-                $ref: '#/definitions/Ryujume'
+                type: object
+                properties:
+                  userName:
+                    type: string
+                  _id:
+                    type: string
+                  simpleInfo:
+                    type: string
+                  likeNumber:
+                    type: number
           default:
             description: "unexpected error"
             schema:
@@ -110,7 +260,7 @@
           200:
             description: OK
             schema:
-              $ref: '#/definitions/Ryujume'
+              $ref: '#/definitions/readRyujume'
           default:
             description: "unexpected error"
             schema:
@@ -124,24 +274,34 @@
             schema:
               type: array
               items:
-                $ref: '#/definitions/Ryujume'
+                type: object
+                properties:
+                  userName:
+                    type: string
+                  _id:
+                    type: string
+                  simpleInfo:
+                    type: string
+                  likeNumber:
+                    type: number
           default:
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
     /myPage/LatestInfo/{infoId}:
       get:
-        summary: Get a info by _id
+        summary: Get a Ryujume by _id
         parameters:
         - in: path
           name: infoId
+          type: string
           required: true
-        description: "추천한 이력서 상세 보기"
+        description: "최신순이력서 상세 보기"
         responses:
           200:
             description: OK
             schema:
-              $ref: '#/definitions/Ryujume'
+              $ref: '#/definitions/readRyujume'
           default:
             description: "unexpected error"
             schema:
@@ -155,24 +315,34 @@
             schema:
               type: array
               items:
-                $ref: '#/definitions/Ryujume'
+                type: object
+                properties:
+                  userName:
+                    type: string
+                  _id:
+                    type: string
+                  simpleInfo:
+                    type: string
+                  likeNumber:
+                    type: number
           default:
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
-    /myPage/LikeInfo/{infoId}:
+    /main/LikeInfo/{infoId}:
       get:
-        summary: Get a info by _id
+        summary: Get a Ryujume by _id
         parameters:
         - in: path
           name: infoId
+          type: string
           required: true
         description: "추천순 이력서 상세 보기"
         responses:
           200:
             description: OK
             schema:
-              $ref: '#/definitions/Ryujume'
+              $ref: '#/definitions/readRyujume'
           default:
             description: "unexpected error"
             schema:
@@ -199,7 +369,6 @@
             schema:
               $ref: "#/definitions/ErrorModel"
       
-      
   definitions:
     user:
       type: object
@@ -210,6 +379,10 @@
           type: string
         userName:
           type: string
+        like:
+          type: array
+          items:
+            type: string
     Ryujume:
       type: object
       properties:
@@ -245,7 +418,7 @@
             properties:
               isInSchool:
                 type: boolean
-              SchoolName:
+              schoolName:
                 type: string
               startDate:
                 type: number
@@ -257,8 +430,6 @@
             type: object
             properties:
               title:
-                type: string
-              detail:
                 type: string
               prizeDate:
                 type: number
@@ -281,6 +452,67 @@
             type: string
         date:
           type: number
+    readRyujume:
+      type: object
+      properties:
+        userName:
+          type: string
+        profileImg:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        simpleInfo:
+          type: string
+        career:
+          type: array
+          items:
+            type: object
+            properties:
+              isServed:
+                type: boolean
+              companyName:
+                type: string
+              startDate:
+                type: number
+              endDate:
+                type: number
+        academicBack:
+          type: array
+          items:
+            type: object
+            properties:
+              isInSchool:
+                type: boolean
+              schoolName:
+                type: string
+              startDate:
+                type: number
+              endDate:
+                type: number
+        prize:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              prizeDate:
+                type: number
+        language:
+          type: array
+          items:
+            type: object
+            properties:
+              languageName:
+                type: string
+              level:
+                type: string
+        link:
+          type: array
+          items:
+            type: string
     ErrorModel: 
       type: "object"
       properties: 
