@@ -61,7 +61,7 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
-    /myPage/writeRyujume:
+    /myPage/writeInfo:
       post:
         description: "이력서 작성"
         parameters:
@@ -71,8 +71,6 @@
           schema: 
             type: object
             properties:
-              profileImg:
-                type: string
               phoneNumber:
                 type: string
               email:
@@ -136,6 +134,23 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
+    /myPage/updateProfileImg:
+      post:
+        description: 프로필 이미지 전송
+        consumes:
+          - "multipart/form-data"
+        parameters:
+        -
+          name: "My infomation"
+          in: "body"
+          schema:
+            type: object
+            properties:
+              profileImg:
+                type: string
+        responses:
+          200:
+            description: OK
       
     /myPage/updateInfo:
       put:
@@ -147,8 +162,6 @@
           schema: 
             type: object
             properties:
-              profileImg:
-                type: string
               phoneNumber:
                 type: string
               email:
@@ -212,12 +225,12 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
-    /myPage/readLikeInfo/{infoId}:
+    /myPage/readLikeInfo/{_id}:
       get:
         summary: Get a Ryujume by _id
         parameters:
         - in: path
-          name: infoId
+          name: _id
           type: string
           required: true
         description: "추천한 이력서 상세 보기"
@@ -265,7 +278,7 @@
             description: "unexpected error"
             schema:
               $ref: '#/definitions/ErrorModel'
-    /main/LatestInfo:
+    /main/latestInfo:
       get:
         description: "최신순 이력서"
         responses:
@@ -288,12 +301,12 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
-    /myPage/LatestInfo/{infoId}:
+    /main/latestInfo/{_id}:
       get:
         summary: Get a Ryujume by _id
         parameters:
         - in: path
-          name: infoId
+          name: _id
           type: string
           required: true
         description: "최신순이력서 상세 보기"
@@ -306,7 +319,7 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
-    /main/LikeInfo:
+    /main/likeInfo:
       get:
         description: "추천순 이력서"
         responses:
@@ -329,12 +342,12 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
-    /main/LikeInfo/{infoId}:
+    /main/likeInfo/{_id}:
       get:
         summary: Get a Ryujume by _id
         parameters:
         - in: path
-          name: infoId
+          name: _id
           type: string
           required: true
         description: "추천순 이력서 상세 보기"
@@ -369,6 +382,7 @@
             schema:
               $ref: "#/definitions/ErrorModel"
       
+      
   definitions:
     user:
       type: object
@@ -379,7 +393,7 @@
           type: string
         userName:
           type: string
-        like:
+        likeRyujume:
           type: array
           items:
             type: string
