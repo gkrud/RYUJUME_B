@@ -4,21 +4,20 @@ const crypto = require('crypto');
 
 const User = new Schema({
     id:String,
-    pw:String,
+    pw:Buffer,
     userName:String,
-    like:[String],
+    likeRyujume:[String],
     salt: String,
 });
 
-User.statics.create = (id,pw,userName,salt) =>{
-    const user = new this({
-        id,
-        pw,
-        userName,
-        salt
-    });
-    return user.save();
-}
+// User.statics.create = (id,pw,userName,salt) =>{
+//     const user = new User();
+//     user.id = id;
+//     user.pw = pw;
+//     user.userName = userName;
+//     user.salt = salt;
+//     return user.save();
+// }
 
 User.methods.verify = async (pw) => {
     let isCorrect = await crypto.pbkdf2(pw,this.salt,180822,64,'sha512');
