@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../../../model/User');
+const Ryujume = require('../../../model/Ryujume');
 
 const register = async (req, res) => {
     const { id, pw, userName } = req.body;
@@ -21,7 +22,15 @@ const register = async (req, res) => {
             //return User.create(id,pwKey,userName,salt);
         }
     }
-    const respond = (user) => {
+
+    const infoCreate = (user)=>{
+        const ryujume = new Ryujume({
+            id: user.id,
+            userName: user.userName
+        });
+        return ryujume.save()
+    }
+    const respond = (ryujume) => {
         res.json({
             message: 'registered successfully',
         })
