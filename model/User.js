@@ -4,10 +4,10 @@ const crypto = require('crypto');
 
 const User = new Schema({
     id:String,
-    pw:Buffer,
+    pw:String,
     userName:String,
     likeRyujume:[String],
-    salt: String,
+    // salt: Buffer,
 });
 
 // User.statics.create = (id,pw,userName,salt) =>{
@@ -20,8 +20,9 @@ const User = new Schema({
 // }
 
 User.methods.verify = async (pw) => {
-    let isCorrect = await crypto.pbkdf2(pw,this.salt,180822,64,'sha512');
-    return isCorrect.toString('base64') === this.pw;
+    // let isCorrect = await crypto.pbkdf2(pw,this.salt,180822,64,'sha512');
+    // return isCorrect.toString('base64') === this.pw;
+    return pw === this.pw;
 }
 
 module.exports = mongoose.model('User', User);

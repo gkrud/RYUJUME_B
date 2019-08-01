@@ -230,24 +230,6 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
-    /myPage/readLikeInfo/{_id}:
-      get:
-        summary: Get a Ryujume by _id
-        parameters:
-        - in: path
-          name: _id
-          type: string
-          required: true
-        description: "추천한 이력서 상세 보기"
-        responses:
-          200:
-            description: OK
-            schema:
-              $ref: '#/definitions/readRyujume'
-          default:
-            description: "unexpected error"
-            schema:
-              $ref: "#/definitions/ErrorModel"
     /myPage/readLikeInfo:
       get:
         description: "추천한 이력서들 보기"
@@ -306,7 +288,7 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
-    /main/latestInfo/{_id}:
+    /main/detail/{_id}:
       get:
         summary: Get a Ryujume by _id
         parameters:
@@ -314,7 +296,7 @@
           name: _id
           type: string
           required: true
-        description: "최신순이력서 상세 보기"
+        description: "이력서 상세 보기"
         responses:
           200:
             description: OK
@@ -347,24 +329,6 @@
             description: "unexpected error"
             schema:
               $ref: "#/definitions/ErrorModel"
-    /main/likeInfo/{_id}:
-      get:
-        summary: Get a Ryujume by _id
-        parameters:
-        - in: path
-          name: _id
-          type: string
-          required: true
-        description: "추천순 이력서 상세 보기"
-        responses:
-          200:
-            description: OK
-            schema:
-              $ref: '#/definitions/readRyujume'
-          default:
-            description: "unexpected error"
-            schema:
-              $ref: "#/definitions/ErrorModel"
     /main/likePress:
       post:
         description: "좋아요 누르기"
@@ -375,7 +339,7 @@
           schema:
             type: object
             properties:
-              infoName:
+              ryujumeId:
                 type: string
               likeStatus:
                 type: boolean
@@ -465,10 +429,8 @@
           type: array
           items:
             type: string
-        likedUser:
-          type: array
-          items:
-            type: string
+        likeNumber:
+          type: number
         date:
           type: number
     readRyujume:

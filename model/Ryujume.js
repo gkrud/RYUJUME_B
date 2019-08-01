@@ -29,24 +29,24 @@ const Ryujume = new Schema({
         level:String
     }],
     link:[String],
-    likedUser:[String],
+    likeNumber: Number,
     date:{type:Date,default:Date.now},
 });
 
-Ryujume.statics.create = (userName,id,phoneNumber,email,simpleInfo,career,academicBack,prize,language,link)=>{
-    const ryujume = new Ryujume({
-        userName,
-        id,
-        phoneNumber,
-        email,
-        simpleInfo,
-        career,
-        academicBack,
-        prize,
-        language,
-        link
-    });
-    return ryujume.save();
-}
+// Ryujume.statics.create = (userName,id,phoneNumber,email,simpleInfo,career,academicBack,prize,language,link)=>{
+//     const ryujume = new Ryujume({
+//         userName,
+//         id,
+//         phoneNumber,
+//         email,
+//         simpleInfo,
+//         career,
+//         academicBack,
+//         prize,
+//         language,
+//         link
+//     });
+//     return ryujume.save();
+// }
 
 module.exports = mongoose.model('Ryujume', Ryujume);

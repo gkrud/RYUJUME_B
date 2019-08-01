@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
 const User = require('../../../model/User');
 const Ryujume = require('../../../model/Ryujume');
 
@@ -8,16 +7,18 @@ const register = async (req, res) => {
 
     const userCreate = async (user) => {
         if(user) {
-            throw new Error('username exists');
+            return new Promise((resolve,reject)=>{
+                reject(new Error('user Exists'));
+            });
         } else {
-            let salt = await crypto.randomBytes(32);
-            let pwKey = crypto.pbkdf2Sync(pw,salt.toString('base64'),180822,64,'sha512');
-            salt = salt.toString('base64');
+            // let salt = await crypto.randomBytes(32);
+            // let pwKey = crypto.pbkdf2Sync(pw,salt.toString('base64'),180822,64,'sha512');
+            // salt = salt.toString('base64');
             const user = new User();
             user.id = id;
-            user.pw = pwKey;
+            user.pw = pw;
             user.userName = userName;
-            user.salt = salt;
+            //user.salt = salt;
             return user.save();
             //return User.create(id,pwKey,userName,salt);
         }
@@ -26,9 +27,11 @@ const register = async (req, res) => {
     const infoCreate = (user)=>{
         const ryujume = new Ryujume({
             id: user.id,
-            userName: user.userName
+            userName: user.userName,
+            likeNumber:0,
+            simpleInfo:''
         });
-        return ryujume.save()
+        return ryujume.save();
     }
     const respond = (ryujume) => {
         res.json({
@@ -45,7 +48,7 @@ const register = async (req, res) => {
 
     let isUser = await User.findOne({id})
     .catch((e)=>res.status(500).json(e));
-    userCreate(isUser).then(respond).catch(onError);
+    userCreate(isUser).then(infoCreate).then(respond).catch(onError);
 
 }
 
@@ -57,7 +60,9 @@ const login = async(req,res)=>{
         
         if(!user) {
             // user does not exist
-            throw new Error('You must signup');
+            return new Promise((resolve,reject)=>{
+                reject(new Error('You must signup'));
+            });
         } else {
             // user exists, check the password
             if(user.verify(pw)) {

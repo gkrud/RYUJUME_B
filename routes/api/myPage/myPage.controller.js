@@ -2,61 +2,61 @@ const jwt = require('jsonwebtoken');
 const User = require('../../../model/User');
 const Ryujume = require('../../../model/Ryujume');
 
-const writeInfo = async (req,res)=>{
-    const token = req.headers['x-access-token'] || req.query.token;
-    const tokenDecoded= await jwt.verify(token, req.app.get('jwt-secret'));
+// const writeInfo = async (req,res)=>{
+//     const token = req.headers['x-access-token'] || req.query.token;
+//     const tokenDecoded= await jwt.verify(token, req.app.get('jwt-secret'));
 
-    const check = async(token)=>{
-        const ryujume = await Ryujume.findOne({id:token.id})
-        .catch((e)=>res.status(500).json(e));
-        if(!ryujume.length) throw new Error('you already have ryujume');
-        return token;
-    }
+//     const check = async(token)=>{
+//         const ryujume = await Ryujume.findOne({id:token.id})
+//         .catch((e)=>res.status(500).json(e));
+//         if(!ryujume.length) throw new Error('you already have ryujume');
+//         return token;
+//     }
 
-    const createMyPage = async(token)=>{
-        const user = await User.findOne({id:token.id})
-        .catch((e)=>res.status(500).json(e));
-            const {userName,id} = user;
-            const {
-                phoneNumber,
-                email,
-                simpleInfo,
-                career,
-                academicBack,
-                prize,
-                language,
-                link
-            } = req.body;
+//     const createMyPage = async(token)=>{
+//         const user = await User.findOne({id:token.id})
+//         .catch((e)=>res.status(500).json(e));
+//             const {userName,id} = user;
+//             const {
+//                 phoneNumber,
+//                 email,
+//                 simpleInfo,
+//                 career,
+//                 academicBack,
+//                 prize,
+//                 language,
+//                 link
+//             } = req.body;
 
-            const ryujume = new Ryujume({
-                userName,
-                id,
-                phoneNumber,
-                email,
-                simpleInfo,
-                career,
-                academicBack,
-                prize,
-                language,
-                link
-            });
-            return ryujume.save();
-    }
+//             const ryujume = new Ryujume({
+//                 userName,
+//                 id,
+//                 phoneNumber,
+//                 email,
+//                 simpleInfo,
+//                 career,
+//                 academicBack,
+//                 prize,
+//                 language,
+//                 link
+//             });
+//             return ryujume.save();
+//     }
 
-    const respond = (ryujume)=>{
-        res.status(200).json(ryujume);
-    }
+//     const respond = (ryujume)=>{
+//         res.status(200).json(ryujume);
+//     }
 
-    const onError = (err)=>{
-        res.status(409).json({
-            message: err.stack
-        });
-    }
-    check(tokenDecoded)
-    .then(createMyPage)
-    .then(respond)
-    .catch(onError)
-}
+//     const onError = (err)=>{
+//         res.status(409).json({
+//             message: err.stack
+//         });
+//     }
+//     check(tokenDecoded)
+//     .then(createMyPage)
+//     .then(respond)
+//     .catch(onError)
+// }
 
 const updateInfo = async(req,res)=>{
     const token = req.headers['x-access-token'] || req.query.token;
@@ -69,9 +69,9 @@ const updateInfo = async(req,res)=>{
     }
     const respond = (update)=>{
         if(!update.n){
-            throw new Error('book not found');
+            throw new Error('Ryujume not found');
         }
-        res.json({ message: "book updated" });
+        res.json({ message: "ryujume updated" });
     }
     const onError = (err)=>{
         res.status(409).json({
@@ -141,13 +141,13 @@ const readLikeInfo = async(req,res)=>{
     const findUser = async(token) =>{
         const user = await User.findOne({id:token.id})
         .catch((e)=>res.status(500).json(e));
-        if(!user.likeRyujume.length)     res.json({message:"you don't have like ryujume"});
+        if(!user.likeRyujume.length)    return "you don't have like ryujume";
         return user.likeRyujume;
     }
     const findRyujumes = async(likeRyujume)=>{
         const ryujumes =[];
         for(let i=0;i<likeRyujume;i++){
-            const ryujume = await Ryujume.findOne({likeRyujume:likeRyujume[i]},{userName:1,simpleInfo:1})
+            const ryujume = await Ryujume.findOne({likeRyujume:likeRyujume[i]},{id:0,phoneNumber:0,career:0,prize:0,academicBack:0,language:0})
             .catch((e)=>res.status(404).json(e));
             ryujumes.push(ryujume);
         }
@@ -167,8 +167,10 @@ const readLikeInfo = async(req,res)=>{
     .catch(onError)
 }
 
+
+
 module.exports = {
-    writeInfo,
+    //writeInfo,
     updateInfo,
     updateProfileImg,
     readMyInfo,

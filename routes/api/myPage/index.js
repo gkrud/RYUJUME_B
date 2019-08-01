@@ -15,8 +15,8 @@ let _storage = multer.diskStorage({
 
 let upload = multer({ storage: _storage });
 
-router.post('/writeInfo',authMiddleware,controller.writeInfo);
-router.post('/updateInfo',authMiddleware,controller.updateInfo);
+//router.post('/writeInfo',authMiddleware,controller.writeInfo);
+router.put('/updateInfo',authMiddleware,controller.updateInfo);
 router.post('/updateProfileImg',authMiddleware,upload.single('profileImg'),controller.updateProfileImg);
 router.get('/readMyInfo',authMiddleware,controller.readMyInfo);
 router.get('/readLikeInfo',authMiddleware,controller.readLikeInfo);
