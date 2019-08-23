@@ -33,20 +33,13 @@ const Ryujume = new Schema({
     date:{type:Date,default:Date.now},
 });
 
-// Ryujume.statics.create = (userName,id,phoneNumber,email,simpleInfo,career,academicBack,prize,language,link)=>{
-//     const ryujume = new Ryujume({
-//         userName,
-//         id,
-//         phoneNumber,
-//         email,
-//         simpleInfo,
-//         career,
-//         academicBack,
-//         prize,
-//         language,
-//         link
-//     });
-//     return ryujume.save();
-// }
+Ryujume.statics.create = function(id, userName, likeNumber, simpleInfo){
+    return new Ryujume({
+        id,
+        userName,
+        likeNumber,
+        simpleInfo
+    }).save();
+}
 
 module.exports = mongoose.model('Ryujume', Ryujume);

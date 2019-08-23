@@ -2,27 +2,34 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const crypto = require('crypto');
 
-const User = new Schema({
+const UserSchema = new Schema({
     id:String,
     pw:String,
     userName:String,
     likeRyujume:[String],
-    // salt: Buffer,
+    salt: String,
 });
 
-// User.statics.create = (id,pw,userName,salt) =>{
-//     const user = new User();
-//     user.id = id;
-//     user.pw = pw;
-//     user.userName = userName;
-//     user.salt = salt;
-//     return user.save();
-// }
-
-User.methods.verify = async (pw) => {
-    // let isCorrect = await crypto.pbkdf2(pw,this.salt,180822,64,'sha512');
-    // return isCorrect.toString('base64') === this.pw;
-    return pw === this.pw;
+UserSchema.statics.create = (id,pw,userName,salt) => {
+    return new User({
+        id,
+        pw,
+        userName,
+        salt,
+    }).save();
 }
 
-module.exports = mongoose.model('User', User);
+UserSchema.methods.verify = (obj, pw) => {
+    let isCorrect = crypto.pbkdf2Sync(pw.toString(),obj.salt,180822,64,'sha512');
+    let i = isCorrect.toString('base64') === obj.pw;
+
+    console.log(isCorrect.toString('base64'));
+    console.log(obj.pw);
+
+    return isCorrect.toString('base64') === obj.pw;
+    //return pw === this.pw;
+}
+
+const User = mongoose.model('User', UserSchema);
+
+module.exports = User;

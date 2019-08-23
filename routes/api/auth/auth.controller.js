@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../../../model/User');
 const Ryujume = require('../../../model/Ryujume');
-
+const crypto = require('crypto');
 const register = async (req, res) => {
     const { id, pw, userName } = req.body;
 
@@ -11,27 +11,15 @@ const register = async (req, res) => {
                 reject(new Error('user Exists'));
             });
         } else {
-            // let salt = await crypto.randomBytes(32);
-            // let pwKey = crypto.pbkdf2Sync(pw,salt.toString('base64'),180822,64,'sha512');
-            // salt = salt.toString('base64');
-            const user = new User();
-            user.id = id;
-            user.pw = pw;
-            user.userName = userName;
-            //user.salt = salt;
-            return user.save();
-            //return User.create(id,pwKey,userName,salt);
+            let salt = await crypto.randomBytes(32);
+            let pwKey = crypto.pbkdf2Sync(pw,salt.toString('base64'),180822,64,'sha512');
+
+            return User.create(id,pwKey.toString('base64'),userName,salt.toString('base64'));
         }
     }
 
     const infoCreate = (user)=>{
-        const ryujume = new Ryujume({
-            id: user.id,
-            userName: user.userName,
-            likeNumber:0,
-            simpleInfo:''
-        });
-        return ryujume.save();
+        return Ryujume.create(user.id,user.userName,0,'');
     }
     const respond = (ryujume) => {
         res.json({
@@ -65,7 +53,7 @@ const login = async(req,res)=>{
             });
         } else {
             // user exists, check the password
-            if(user.verify(pw)) {
+            if(user.verify(user, pw)) {
                 // create a promise that generates jwt asynchronously
                 const p = new Promise((resolve, reject) => {
                     jwt.sign(
@@ -83,9 +71,10 @@ const login = async(req,res)=>{
                         });
                 }); 
                 return p;
-            } else {
-                throw new Error('login failed');
             }
+            return new Promise((resolve,reject)=>{
+                reject(new Error('login failed'));
+            });
         }
     }
 
