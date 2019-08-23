@@ -4,12 +4,12 @@
     version: "1.0.0"
     title: "RYUJUME"
     description: "RYUJUME"
-    termsOfService: "http://10.156.145.132:1212"
+    termsOfService: "http://54.180.81.160:3000"
     contact: 
       name: ""
     license: 
       name: "MIT"
-  host: "10.156.145.19:1212"
+  host: "54.180.81.160:3000"
   basePath: "/api"
   schemes: 
     - "http"
