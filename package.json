@@ -23,6 +23,7 @@
   "homepage": "https://github.com/notmyfault02/Pictory_Master#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "crypto": "^1.0.1",
     "eslint": "^5.15.3",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.5.1",
